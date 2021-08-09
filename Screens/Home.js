@@ -20,33 +20,33 @@ export default class HomeScreen extends React.Component {
         )
     }
 
-    liked_movie = ()=>{
+    liked_movie = () => {
         const url = "http://localhost:5000/liked-movie"
-        axios.post(url).then((response)=>{
+        axios.post(url).then((response) => {
             this.getMovie()
         })
-        .catch(error => {
-            console.log(error.message)
-        })
+            .catch(error => {
+                console.log(error.message)
+            })
     }
 
-    unliked_movie = ()=>{
+    unliked_movie = () => {
         const url = "http://localhost:5000/unliked-movie"
-        axios.post(url).then((response)=>{
+        axios.post(url).then((response) => {
             this.getMovie()
         })
-        .catch(error => {
-            console.log(error.message)
-        })
+            .catch(error => {
+                console.log(error.message)
+            })
     }
-    not_watch = ()=>{
+    not_watch = () => {
         const url = "http://localhost:5000/did-not-watch-movie"
-        axios.post(url).then((response)=>{
+        axios.post(url).then((response) => {
             this.getMovie()
         })
-        .catch(error => {
-            console.log(error.message)
-        })
+            .catch(error => {
+                console.log(error.message)
+            })
     }
 
     getMovie = () => {
@@ -66,64 +66,70 @@ export default class HomeScreen extends React.Component {
     }
 
     render() {
-        var posterlink = "#"
-        if (this.state.movie_details.posterlink) {
-            posterlink = this.state.movie_details.posterlink
 
-        }
-        if(Object.keys(this.state.movie_details).length !== 0){
-        return (
-            <View>
+        if (Object.keys(this.state.movie_details).length !== 0) {
+            var posterlink = "#"
+            if (this.state.movie_details.poster_link) {
+                posterlink = this.state.movie_details.poster_link
+                console.log(posterlink)
+            }
+            return (
                 <View>
-                    <Text>Movie-Recommendation</Text>
+                    <View>
+                        <Text style={styles.title}>Movie-Recommendation</Text>
+                    </View>
+                    <View>
+                        <Image
+                            source={{ uri: posterlink }}
+                            style={{ height: 50, width: 100 }}
+                        />
+                        <Text style={styles.movie_description}>
+                            {this.state.movie_details.title}
+                        </Text>
+
+                        <Text style={styles.movie_description}>
+                            duration :  {this.state.movie_details.duration}
+                        </Text>
+
+                        <Text style={styles.movie_description}>
+
+                            release_date:  {this.state.movie_details.release_date.split("-")[0]}
+                        </Text>
+
+                        <TouchableOpacity style={styles.button}
+                            onPress={this.liked_movie}>
+                            <Text style={styles.text}>LIKE</Text>
+                        </TouchableOpacity>
+
+
+                        <TouchableOpacity style={styles.button}
+                            onPress={this.unliked_movie}>
+                            <Text style={styles.text}>UNLIKE</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.button}
+                            onPress={this.not_watch}>
+                            <Text style={styles.text}>NOT WATCHED</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.button2}
+                            onPress={()=>{
+                                this.props.navigation.navigate("AppTabnavigator")
+                            }}>
+                            <Text style={styles.text}>Recommendations</Text>
+                        </TouchableOpacity>
+
+
+
+                    </View>
+
+
                 </View>
+            )
+        } else {
+            return (
                 <View>
-                    <Image
-                        source={{ uri: posterlink }}
-                        style={{ height: 50, width: 100 }}
-                    />
-                    <Text>
-                        {this.state.movie_details.title}
-                    </Text>
 
-                    <Text>
-                        duration :  {this.state.movie_details.duration}
-                    </Text>
-
-                    <Text>
-
-                        release_date:  {this.state.movie_details.release_date.split("-")[0]}
-                    </Text>
-
-                    <TouchableOpacity style={styles.button}
-                        onPress={this.liked_movie}>
-                        <Text style={styles.text}>LIKE</Text>
-                    </TouchableOpacity>
-
-
-                    <TouchableOpacity style={styles.button}
-                        onPress={this.unliked_movie}>
-                        <Text style={styles.text}>UNLIKE</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.button}
-                        onPress={this.not_watched}>
-                        <Text style={styles.text}>NOT WATCHED</Text>
-                    </TouchableOpacity>
-
-
-
-
-
-                </View>
-
-
-            </View>
-        )
-        }else{
-            return(
-                <View>
-                    
                 </View>
             )
         }
@@ -133,9 +139,36 @@ export default class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
     text: {
-        fontSize: 15
+        fontSize: 15,
+    },
+    title: {
+        fontSize: 30,
+        marginLeft: 20,
+        backgroundColor: "orange",
+        borderRadius: 10,
+        marginRight: 20,
+        alignSelf: "center"
+    },
+    movie_description: {
+        marginVertical: 5,
+        fontSize: 20,
+        alignItems: "center",
+        alignSelf: "center",
     },
     button: {
-        backgroundColor: "blue"
+        backgroundColor: "blue",
+        fontSize: 10,
+        borderRadius: 10,
+        marginBottom: 2,
+        alignItems: 'center',
+        marginTop: 10
+    },
+    button2: {
+        backgroundColor: "red",
+        fontSize: 10,
+        borderRadius: 10,
+        marginBottom: 2,
+        alignItems: 'center',
+        marginTop: 10
     }
 })
